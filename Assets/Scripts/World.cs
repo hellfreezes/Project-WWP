@@ -42,15 +42,22 @@ public class World {
                 GameObject go = new GameObject();
                 SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
                 int i = UnityEngine.Random.Range(0, 3);
-                sr.sprite = gameManager.GetTile(i);
+                sr.sprite = gameManager.GetSpriteTile(i);
+                go.name = "Tile (" + x + ", " + y + ")";
                 go.transform.SetParent(gameManager.WorldHandler.transform);
                 go.transform.position = new Vector3(x, y, 0);
             }
         }
     }
 
-    public Tile GetTileAtCoords(Vector2 coords)
+    public Tile GetTileAt(int x, int y)
     {
-        return tiles[coords];
+        // Проверка попадают ли введенные координаты в рамки мира
+        if (x >= Width || x < 0 || y >= Heigth || y < 0)
+        {
+            //Debug.LogError("Tile (" + x + ", " + y + ") is out of range");
+            return null;
+        }
+        return tiles[new Vector2(x, y)];
     }
 }

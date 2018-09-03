@@ -7,10 +7,25 @@ public class Tile {
     public int Y { get; protected set; }
 
     private UnitRenderer unitRenderer;
+    private GameObject obj;
+    private Construction construction;
 
     public Tile(int x, int y)
     {
         X = x;
         Y = y;
+    }
+
+    public void SetConstruction(Construction c)
+    {
+        construction = c;
+    }
+
+    public bool Free()
+    {
+        if (construction != null)
+            return false;
+
+        return true;
     }
 }
