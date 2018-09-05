@@ -40,9 +40,9 @@ public class Construction {
             for (int j = 0; j < construction.TileSize.y; j++)
             {
                 Tile constrTile = World.Instance.GetTileAt(t.X + i, t.Y + j);
+                Debug.Log("Назначаем сооружение");
                 constrTile.SetConstruction(construction);
-                Debug.Log(constrTile);
-                tilesRef.Add(constrTile);
+                construction.tilesRef.Add(constrTile);
             }
         }
         return construction;
@@ -51,6 +51,9 @@ public class Construction {
     public void SetGameObject(GameObject go)
     {
         ObjectReference = go;
+        go.transform.localScale = new Vector3(TileSize.x, TileSize.y, 1);
+        ObjectReference.transform.localPosition = new Vector3(X + ((TileSize.x - 1) / 2), Y + ((TileSize.y - 1) / 2), 0);
+        Debug.Log("Установлено позиция " + ObjectName + ": " + ObjectReference.transform.localPosition.ToString());
     }
 
     public void Update(float speed)

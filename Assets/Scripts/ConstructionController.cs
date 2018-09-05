@@ -30,12 +30,14 @@ public class ConstructionController : MonoBehaviour {
     public void PlaceBuilding(string name)
     {
         Tile t = MouseController.Instance.GetTileAtMouse();
-        Construction c = constructionsDatabase[name].Clone(t);
-        if (PlaceIsCorrect(t, c.TileSize))
+        
+        if (PlaceIsCorrect(t, constructionsDatabase[name].TileSize))
         {
+            Construction c = constructionsDatabase[name].Clone(t);
+
             GameObject go = new GameObject();
             go.transform.SetParent(constructionParent.transform);
-            go.transform.position = new Vector3(t.X, t.Y, 0);
+            //go.transform.position = new Vector3(t.X, t.Y, 0);
             SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
             sr.sprite = c.ObjectSprite;
             c.SetGameObject(go);
