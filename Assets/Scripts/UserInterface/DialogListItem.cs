@@ -6,13 +6,12 @@ using UnityEngine.EventSystems;
 
 public class DialogListItem : MonoBehaviour, IPointerClickHandler {
 
-    [SerializeField]
-    private InputField inputField;
+    public InputField inputField { get; set; }
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -21,6 +20,7 @@ public class DialogListItem : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        inputField.text = GetComponentInChildren<Text>().text;
+        Text t = GetComponentInChildren<Text>();
+        inputField.text = t.text;
     }
 }

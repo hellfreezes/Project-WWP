@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour {
     private int heigth;
     [SerializeField]
     private Sprite[] tiles;
+    [SerializeField]
+    private string saveFolder = "Saves";
 
     World world;
 
@@ -65,5 +68,17 @@ public class GameManager : MonoBehaviour {
         int y = Mathf.FloorToInt(coord.y + 0.5f);
 
         return world.GetTileAt(x, y);
+    }
+
+    public string FileSaveBasePath()
+    {
+        string path = Path.Combine(Application.persistentDataPath, saveFolder);
+
+        if (Directory.Exists(path) == false)
+        {
+            Directory.CreateDirectory(path);
+        }
+
+        return path;
     }
 }
