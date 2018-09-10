@@ -1,0 +1,34 @@
+{
+    "Version": "1.00",
+    "Constructions": [
+        {
+            "Name": "Lumber Mill", 
+            "SpriteName": "Lumber Mill",
+            "TileSizeWidth": 3,
+            "TileSizeHeigth": 3,
+            "Resource": [ 
+                {
+                    "Name": "WOOD",
+                    "Value": 5 
+                }
+            ],
+            "Param" : [
+                {
+                    "Name": "timeToWait",
+                    "Value": 5
+                },
+                {
+                    "Name": "counter",
+                    "Value": 5
+                },
+                {
+                    "Name": "productionValue",
+                    "Value": 1
+                }
+            ],
+            "OnUpdateAction" : [
+                "LumberMillUpdate"
+            ]
+        }
+    ]
+}

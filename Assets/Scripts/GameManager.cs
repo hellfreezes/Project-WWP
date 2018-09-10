@@ -28,8 +28,8 @@ public class GameManager : MonoBehaviour {
 
     public float GameSpeed { get; protected set; }
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         if (instance != null)
         {
             Debug.Log("На сцене не может быть больше одного GameManager");

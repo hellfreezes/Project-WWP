@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,12 +15,30 @@ public class Construction {
     public Sprite ObjectSprite { get; protected set; }
     public string ObjectName { get; protected set; }
     public Vector2 TileSize { get; protected set; }
+    public Resources Resources { get; protected set; }
 
-    public Construction(string name, Sprite objectSprite, Vector2 tileSize)
+    /// <summary>
+    /// Словарь содержащий кастомные параметры (float) упорядоченных по ключевой строке (string)
+    /// Для получение кастомного параметра необходимо знать ключ (string).
+    /// Создано чтобы в дальнейшем грузить кастомные параметры из LUA текстовых файлов
+    /// </summary>
+    public Dictionary<string, float> Parameters { get; protected set; } // Кастомные параметры
+
+    /// <summary>
+    /// Перечень этих методов исполняется для фурнитуры каждый апдейт
+    /// В данном случае float - это deltaTime.
+    /// В вызываемом методе могут быть использованы параметры из словаря parameters
+    /// </summary>
+    public Action<Construction, float> UpdateActions { get; protected set; } // Какие-то действия которые умеет здание
+    //protected List<string> updateActions; // строковые наименования функций полученных из LUA кода
+
+    public Construction(string name, Sprite objectSprite, Vector2 tileSize, Resources res)
     {
         this.ObjectName = name;
         this.ObjectSprite = objectSprite;
         this.TileSize = tileSize;
+        this.Resources = res;
+        this.Parameters = new Dictionary<string, float>();
     }
 
     public Construction(Construction other)
@@ -28,6 +47,9 @@ public class Construction {
         ObjectName = other.ObjectName;
         ObjectSprite = other.ObjectSprite;
         tilesRef = new List<Tile>();
+        Resources = other.Resources;
+        Parameters = new Dictionary<string, float>(other.Parameters);
+        UpdateActions = other.UpdateActions;
     }
 
     public Construction Clone(Tile t)
@@ -40,7 +62,6 @@ public class Construction {
             for (int j = 0; j < construction.TileSize.y; j++)
             {
                 Tile constrTile = World.Instance.GetTileAt(t.X + i, t.Y + j);
-                Debug.Log("Назначаем сооружение");
                 constrTile.SetConstruction(construction);
                 construction.tilesRef.Add(constrTile);
             }
@@ -51,13 +72,50 @@ public class Construction {
     public void SetGameObject(GameObject go)
     {
         ObjectReference = go;
-        go.transform.localScale = new Vector3(TileSize.x, TileSize.y, 1);
         ObjectReference.transform.localPosition = new Vector3(X + ((TileSize.x - 1) / 2), Y + ((TileSize.y - 1) / 2), 0);
-        Debug.Log("Установлено позиция " + ObjectName + ": " + ObjectReference.transform.localPosition.ToString());
     }
 
-    public void Update(float speed)
+    public bool IsBuildTileVaild(Tile t)
     {
+        for (int x = 0; x < TileSize.x; x++)
+        {
+            for (int y = 0; y < TileSize.y; y++)
+            {
+                if (!World.Instance.GetTileAt(t.X + x, t.Y + y).Free())
+                {
+                    return false;
+                }
+            }
+        }
 
+        return true;
+    }
+
+    public void Update(float deltaTime)
+    {
+        if (UpdateActions != null)
+        {
+            UpdateActions(this, deltaTime);
+        }
+    }
+
+    public float GetParam(string name)
+    {
+        return Parameters[name];
+    }
+
+    public void SetParam(string name, float value)
+    {
+        Parameters[name] = value;
+    }
+
+    public void RegisterOnUpdate(Action<Construction, float> callback)
+    {
+        UpdateActions += callback;
+    }
+
+    public void UnregisterOnUpdate(Action<Construction, float> callback)
+    {
+        UpdateActions -= callback;
     }
 }

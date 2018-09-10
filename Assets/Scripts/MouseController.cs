@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,12 +16,28 @@ public class MouseController : MonoBehaviour
     private int cameraDragSpeed = 50;
     [SerializeField]
     private ConstructionController constructionController;
+    [SerializeField]
+    float cameraMinX = 7.3f;
+    [SerializeField]
+    float cameraMaxX = 100f;
+    [SerializeField]
+    float cameraMinY = 3.1f;
+    [SerializeField]
+    float cameraMaxY = 100f;
 
     private MouseMode mouseMode = MouseMode.SELECT;
 
     private static MouseController instance;
 
+    private GameObject previewObject;
+    private SpriteRenderer previewObjectSprite;
+
     private string buildName = "";
+
+
+    private Color COLOR_GREEN = new Color(0, 1, 0, 0.5f);
+    private Color COLOR_RED = new Color(1, 0, 0, 0.5f);
+
 
     public static MouseController Instance
     {
@@ -34,7 +51,27 @@ public class MouseController : MonoBehaviour
             Debug.Log("На сцене не может быть больше одного MouseController");
         }
         instance = this;
-	}
+
+        CreatePreviewObject();
+        RegisterEventSubscribers();
+        TrimPosition();
+    }
+
+    private void CreatePreviewObject()
+    {
+        previewObject = new GameObject();
+        previewObjectSprite = previewObject.AddComponent<SpriteRenderer>();
+        previewObjectSprite.sortingLayerName = "Preview";
+        previewObjectSprite.color = COLOR_GREEN;
+        previewObject.name = "MousePreviewObject";
+        previewObject.transform.SetParent(constructionController.GetConstructionParent());
+        previewObject.SetActive(false);
+    }
+
+    private void RegisterEventSubscribers()
+    {
+        constructionController.ConstructionPlaced += OnConstructionPlaced;
+    }
 
     private void Update()
     {
@@ -42,6 +79,7 @@ public class MouseController : MonoBehaviour
         {
             float speed = cameraDragSpeed * Time.deltaTime;
             Camera.main.transform.position -= new Vector3(Input.GetAxis("Mouse X") * speed, Input.GetAxis("Mouse Y") * speed, 0);
+            TrimPosition();
         }
 
         if (EventSystem.current.IsPointerOverGameObject())
@@ -60,6 +98,42 @@ public class MouseController : MonoBehaviour
                     break;
             }
         }
+
+        UpdatePreviewObject();
+    }
+
+    /// <summary>
+    /// TODO: переименовать
+    /// </summary>
+    private void TrimPosition()
+    {
+        float x = Camera.main.transform.position.x;
+        float y = Camera.main.transform.position.y;
+
+        x = Mathf.Clamp(x, cameraMinX, cameraMaxX);
+        y = Mathf.Clamp(y, cameraMinY, cameraMaxY);
+
+        Camera.main.transform.position = new Vector3(x, y, -10);
+    }
+
+    private void UpdatePreviewObject()
+    {
+        if (mouseMode == MouseMode.BUILD)
+        {
+            Tile t = GetTileAtMouse();
+            if (t != null)
+            {
+                Vector2 tileSize = constructionController.GetPattern(buildName).TileSize;
+                previewObject.transform.localPosition = new Vector3(t.X + ((tileSize.x - 1) / 2), t.Y + ((tileSize.y - 1) / 2), 0);
+                if (constructionController.GetPattern(buildName).IsBuildTileVaild(t))
+                {
+                    previewObjectSprite.color = COLOR_GREEN;
+                } else
+                {
+                    previewObjectSprite.color = COLOR_RED;
+                }
+            }
+        }
     }
 
     private void BuildMode()
@@ -67,20 +141,43 @@ public class MouseController : MonoBehaviour
         Tile tile = GetTileAtMouse();
         if (tile != null)
         {
-            Debug.Log("Строим на: " + tile.X + ", " + tile.Y);
             constructionController.PlaceBuilding(buildName);
         }
     }
 
-    public void SetBuildingName(string name)
+    public void SetBuildingMode(string name)
     {
-        buildName = name;
-        mouseMode = MouseMode.BUILD;
+        if (ResourcesController.Instance.MainResources.IsEnough(constructionController.GetPattern(name).Resources))
+        {
+            buildName = name;
+            mouseMode = MouseMode.BUILD;
+            previewObject.GetComponent<SpriteRenderer>().sprite = constructionController.GetPattern(buildName).ObjectSprite;
+            previewObject.SetActive(true);
+        } else
+        {
+            Resources notEnough = ResourcesController.Instance.MainResources.NotEnough(constructionController.GetPattern(name).Resources);
+            for (int i = 0; i < notEnough.Keys().Length; i++)
+            {
+                PopupMessageController.Instance.ShowMessage("Нехватает " + notEnough.Keys()[i].ToString());
+            }
+        }
+    }
+
+    private void OnConstructionPlaced(object source, EventArgs args)
+    {
+        SetSelecetMode();
+    }
+
+    private void SetSelecetMode()
+    {
+        previewObject.SetActive(false);
+        mouseMode = MouseMode.SELECT;
+        buildName = "";
     }
 
     public Tile GetTileAtMouse()
     {
         Vector3 coords = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        return World.Instance.GetTileAt(Mathf.FloorToInt(coords.x+0.5f), Mathf.FloorToInt(coords.y+0.5f));
+        return World.Instance.GetTileAt(Mathf.FloorToInt(coords.x + 0.5f), Mathf.FloorToInt(coords.y + 0.5f));
     }
 }

@@ -43,9 +43,10 @@ public class World {
                 SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
                 int i = UnityEngine.Random.Range(0, 3);
                 sr.sprite = gameManager.GetSpriteTile(i);
+                sr.sortingLayerName = "Tile";
                 go.name = "Tile (" + x + ", " + y + ")";
                 go.transform.SetParent(gameManager.WorldHandler.transform);
-                go.transform.position = new Vector3(x, y, 0);
+                go.transform.localPosition = new Vector3(x, y, 0);
             }
         }
     }
