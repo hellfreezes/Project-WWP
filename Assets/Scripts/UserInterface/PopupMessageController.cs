@@ -13,7 +13,6 @@ public class PopupMessageController : MonoBehaviour {
     private int lifeTime = 5;
 
     private PopupMessage[] lines;
-
     private static PopupMessageController instance;
     
     public static PopupMessageController Instance
@@ -28,7 +27,6 @@ public class PopupMessageController : MonoBehaviour {
             Debug.Log("PopupMessageController не один на сцене! Удаляю");
         }
         instance = this;
-
         lines = new PopupMessage[numberOfLines];
 
         for (int i = 0; i < numberOfLines; i++)

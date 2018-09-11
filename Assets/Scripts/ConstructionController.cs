@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,12 +26,17 @@ public class ConstructionController : MonoBehaviour {
     public EventHandler<ConstructionArgs> ConstructionPlaced;
 
     // Use this for initialization
-    void Start()
+    private void Awake()
     {
         constructionFunctions = new ConstructionFunctions();
         constructionPatterns = new Dictionary<string, Construction>();
         constructions = new List<Construction>();
         CreateConstructionsList();
+    }
+
+    void Start()
+    {
+        
     }
 
     private void CreateConstructionsList()
@@ -73,10 +79,13 @@ public class ConstructionController : MonoBehaviour {
         return c;
     }
 
-    public void PlaceBuilding(string name)
+    private void CreateConstructionButtons()
     {
-        Tile t = MouseController.Instance.GetTileAtMouse();
-        
+
+    }
+
+    public void PlaceBuilding(string name, Tile t)
+    {
         if (constructionPatterns[name].IsBuildTileVaild(t))
         {
             Construction c = constructionPatterns[name].Clone(t);
@@ -116,6 +125,11 @@ public class ConstructionController : MonoBehaviour {
         }
 
         return constructionPatterns[name];
+    }
+
+    public Construction[] GetAllPatterns()
+    {
+        return constructionPatterns.Values.ToArray();
     }
 
     public Transform GetConstructionParent()

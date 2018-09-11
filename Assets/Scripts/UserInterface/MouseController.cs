@@ -7,7 +7,9 @@ using UnityEngine.EventSystems;
 public enum MouseMode
 {
     SELECT,
-    BUILD
+    BUILD,
+    EDITOR_OBJECTS,
+    EDITOR_TILES
 }
 
 public class MouseController : MonoBehaviour
@@ -16,6 +18,8 @@ public class MouseController : MonoBehaviour
     private int cameraDragSpeed = 50;
     [SerializeField]
     private ConstructionController constructionController;
+    [SerializeField]
+    private WorldObjectController woController;
     [SerializeField]
     float cameraMinX = 7.3f;
     [SerializeField]
@@ -96,6 +100,9 @@ public class MouseController : MonoBehaviour
                     break;
                 case MouseMode.SELECT:
                     break;
+                case MouseMode.EDITOR_OBJECTS:
+                    ObjectsMode();
+                    break;
             }
         }
 
@@ -128,10 +135,20 @@ public class MouseController : MonoBehaviour
                 if (constructionController.GetPattern(buildName).IsBuildTileVaild(t))
                 {
                     previewObjectSprite.color = COLOR_GREEN;
-                } else
+                }
+                else
                 {
                     previewObjectSprite.color = COLOR_RED;
                 }
+            }
+        }
+        else if (mouseMode == MouseMode.EDITOR_OBJECTS)
+        {
+            Tile t = GetTileAtMouse();
+            if (t != null)
+            {
+                Vector2 tileSize = woController.GetPattern(buildName).TileSize;
+                previewObject.transform.localPosition = new Vector3(t.X + ((tileSize.x - 1) / 2), t.Y + ((tileSize.y - 1) / 2), 0);
             }
         }
     }
@@ -141,7 +158,16 @@ public class MouseController : MonoBehaviour
         Tile tile = GetTileAtMouse();
         if (tile != null)
         {
-            constructionController.PlaceBuilding(buildName);
+            constructionController.PlaceBuilding(buildName , tile);
+        }
+    }
+
+    private void ObjectsMode()
+    {
+        Tile tile = GetTileAtMouse();
+        if (tile != null)
+        {
+            woController.PlaceObject(buildName, tile);
         }
     }
 
@@ -161,6 +187,14 @@ public class MouseController : MonoBehaviour
                 PopupMessageController.Instance.ShowMessage("Нехватает " + notEnough.Keys()[i].ToString());
             }
         }
+    }
+
+    public void SetEditorWorldObjectMode(string name)
+    {
+        buildName = name;
+        mouseMode = MouseMode.EDITOR_OBJECTS;
+        previewObject.GetComponent<SpriteRenderer>().sprite = woController.GetPattern(buildName).ObjectSprite;
+        previewObject.SetActive(true);
     }
 
     private void OnConstructionPlaced(object source, EventArgs args)

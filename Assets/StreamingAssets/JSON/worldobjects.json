@@ -1,0 +1,23 @@
+{
+    "Version": "1.00",
+    "worldObjects": [
+        {
+            "objectName": "Grass01",
+            "spriteName": "Grass01",
+            "width": 1,
+            "heigth": 1
+        },
+        {
+            "objectName": "Tree01",
+            "spriteName": "Tree01",
+            "width": 2,
+            "heigth": 3
+        },
+        {
+            "objectName": "Rock01",
+            "spriteName": "Rock01",
+            "width": 1,
+            "heigth": 1
+        }
+    ]
+}

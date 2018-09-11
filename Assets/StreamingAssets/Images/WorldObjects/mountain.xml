@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Sprites>
+	<Sprite name="Grass01" x="256" y="160" w="32" h="32" pixelsPerUnit="32"/>
+	<Sprite name="Tree01" x="224" y="0" w="64" h="96" pixelsPerUnit="32"/>
+	<Sprite name="Rock01" x="384" y="96" w="32" h="32" pixelsPerUnit="32"/>
+</Sprites>
