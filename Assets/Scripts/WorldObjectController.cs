@@ -13,13 +13,8 @@ public class WorldObjectController : MonoBehaviour {
 
     private List<WorldObject> worldObjects;
 
-    private void Awake()
+    private void Start()
     {
-        
-    }
-
-    // Use this for initialization
-    void Start () {
         worldObjects = new List<WorldObject>();
         LoadWorldObjectsPatterns();
     }
@@ -76,15 +71,10 @@ public class WorldObjectController : MonoBehaviour {
     {
         if (/* тут проверка на возможность установки*/true)
         {
-            WorldObject c = worldobjectsPatterns[name].Clone(t);
+            WorldObject c = (WorldObject)worldobjectsPatterns[name].Clone(t);
 
-            GameObject go = new GameObject();
-            go.name = name;
-            go.transform.SetParent(worldObjectsHandler);
-            SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = c.ObjectSprite;
-            sr.sortingLayerName = "WorldObjects";
-            c.SetGameObject(go);
+            c.Place();
+            c.ObjectHandler.transform.SetParent(worldObjectsHandler);
 
             worldObjects.Add(c);
 

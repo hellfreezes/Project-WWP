@@ -6,7 +6,7 @@ using UnityEngine;
 public class ConstructionFunctions {
 
     static ConstructionFunctions instance;
-    static Dictionary<string, Action<Construction, float>> actions;
+    static Dictionary<string, Action<Unit, float>> actions;
 
     public static ConstructionFunctions Instance
     {
@@ -29,11 +29,11 @@ public class ConstructionFunctions {
 
     private void CreateActionsLibrary()
     {
-        actions = new Dictionary<string, Action<Construction, float>>();
+        actions = new Dictionary<string, Action<Unit, float>>();
         actions.Add("LumberMillUpdate", LumberMillUpdate);
     }
 
-    public Action<Construction, float> GetAction(string name)
+    public Action<Unit, float> GetAction(string name)
     {
         if (!actions.ContainsKey(name))
         {
@@ -43,7 +43,7 @@ public class ConstructionFunctions {
         return actions[name];
     }
 
-    public static void LumberMillUpdate(Construction construction, float deltaTime)
+    public static void LumberMillUpdate(Unit construction, float deltaTime)
     {
         construction.SetParam("counter", construction.GetParam("counter") - deltaTime);
         if (construction.GetParam("counter") <= 0)

@@ -8,7 +8,7 @@ public class Tile {
 
     private UnitRenderer unitRenderer;
     private GameObject obj;
-    private Construction construction;
+    private Unit unit;
 
     public Tile(int x, int y)
     {
@@ -16,14 +16,14 @@ public class Tile {
         Y = y;
     }
 
-    public void SetConstruction(Construction c)
+    public void SetUnit(Unit u)
     {
-        construction = c;
+        unit = u;
     }
 
     public bool Free()
     {
-        if (construction != null)
+        if (unit != null)
             return false;
 
         return true;

@@ -15,7 +15,7 @@ public class SpriteManager : MonoBehaviour
     public static SpriteManager current;
 
     // Use this for initialization
-    private void OnEnable()
+    private void Awake()
     {
         current = this;
 

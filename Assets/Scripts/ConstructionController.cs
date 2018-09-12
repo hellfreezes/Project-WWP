@@ -88,15 +88,10 @@ public class ConstructionController : MonoBehaviour {
     {
         if (constructionPatterns[name].IsBuildTileVaild(t))
         {
-            Construction c = constructionPatterns[name].Clone(t);
+            Construction c = (Construction)constructionPatterns[name].Clone(t);
 
-            GameObject go = new GameObject();
-            go.name = name;
-            go.transform.SetParent(constructionParent.transform);
-            SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
-            sr.sprite = c.ObjectSprite;
-            sr.sortingLayerName = "Construction";
-            c.SetGameObject(go);
+            c.Place();
+            c.ObjectHandler.transform.SetParent(constructionParent.transform);
 
             constructions.Add(c);
 

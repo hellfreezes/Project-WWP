@@ -2,44 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WorldObject {
-    public int X { get; protected set; }
-    public int Y { get; protected set; }
-
-    private UnitRenderer unitRenderer;
-    private GameObject ObjectReference;
-
-    public string ObjectName { get; set; }
-    public Sprite ObjectSprite { get; set; }
-    public Vector2 TileSize { get; set; }
-
-    public WorldObject(int x, int y)
+public class WorldObject : Unit {
+    protected override string LayerName
     {
-        X = x;
-        Y = y;
+        get
+        {
+            return "WorldObject";
+        }
     }
 
-    public WorldObject(string name, Sprite sprite, Vector2 size)
+    public WorldObject(Vector2 position) : base (position)
     {
-        ObjectName = name;
-        ObjectSprite = sprite;
-        TileSize = size;
+        
     }
 
-    public WorldObject Clone(Tile t)
+    public WorldObject(string name, Sprite sprite, Vector2 size) : base (name, sprite, size)
     {
-        WorldObject w = new WorldObject(t.X, t.Y);
-        w.ObjectName = this.ObjectName;
-        w.ObjectSprite = this.ObjectSprite;
-        w.TileSize = this.TileSize;
-
-        return w;
+        
     }
 
-    public void SetGameObject(GameObject go)
+    public WorldObject(WorldObject other) : base(other)
     {
-        ObjectReference = go;
-        // (Y / 100f) - чтобы то, что находится дальше находилось под тем, что находится ближе
-        ObjectReference.transform.localPosition = new Vector3(X + ((TileSize.x - 1) / 2), Y + ((TileSize.y - 1) / 2), (Y / 100f));
+
+    }
+
+    public override Unit Clone(Tile t)
+    {
+        WorldObject worldObject = new WorldObject(this);
+        worldObject.Position = new Vector2(t.X, t.Y);
+        SetTilesReference(worldObject, t);
+        return worldObject;
     }
 }
