@@ -41,14 +41,20 @@ public class Construction : Unit {
     {
         base.DeserelizePattern();
         Resources = new Resources();
-        foreach (JInteger r in this.JResource)
+        if (this.JResource != null)
         {
-            Resources.SetResource((ResourceName)Enum.Parse(typeof(ResourceName), r.name), r.value);
+            foreach (JInteger r in this.JResource)
+            {
+                Resources.SetResource((ResourceName)Enum.Parse(typeof(ResourceName), r.name), r.value);
+            }
         }
-        foreach (string action in this.JOnUpdateAction)
+        if (this.JOnUpdateAction != null)
         {
-            //TODO: надо бы как-то покрасивше это записать:
-            RegisterOnUpdate(ConstructionFunctions.Instance.GetAction(action));
+            foreach (string action in this.JOnUpdateAction)
+            {
+                //TODO: надо бы как-то покрасивше это записать:
+                RegisterOnUpdate(ConstructionFunctions.Instance.GetAction(action));
+            }
         }
 
         return this;

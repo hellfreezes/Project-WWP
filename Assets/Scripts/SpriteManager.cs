@@ -118,7 +118,7 @@ public class SpriteManager : MonoBehaviour
         Vector2 pivotPoint = new Vector2(0.5f, 0.5f); // середина
         imageTexture.filterMode = FilterMode.Point;
         Sprite s = Sprite.Create(imageTexture, spriteCoordinates, pivotPoint, pixelsPerUnity);
-        //Debug.Log(spriteName);
+
         sprites[spriteName] = s;
     }
 

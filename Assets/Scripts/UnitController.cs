@@ -18,14 +18,15 @@ public abstract class UnitController<T> : MonoBehaviour where T : Unit {
 
     protected virtual void Start()
     {
-        unitPatterns = new Dictionary<string, T>();
         units = new List<T>();
-        if (unitPatterns != null)
+        if (unitPatterns == null)
             LoadPatterns();
     }
 
     protected virtual void LoadPatterns()
     {
+        unitPatterns = new Dictionary<string, T>();
+
         string path = Application.streamingAssetsPath + "/JSON/" + PatternsFile + ".json";
         JArray<T> serelizedList = new JArray<T>();
         Debug.Log(typeof(T).ToString());
@@ -38,11 +39,13 @@ public abstract class UnitController<T> : MonoBehaviour where T : Unit {
         {
             unitPatterns.Add(unit.JName, (T)unit.DeserelizePattern());
         }
+
+        OnPatternsLoaded();
     }
 
     public virtual T Place(string name, Tile t)
     {
-        if (unitPatterns[name].IsBuildTileVaild(t))
+        if (!unitPatterns[name].IsBuildTileVaild(t))
         {
             Debug.Log("Место занято");
             return null;
@@ -51,11 +54,16 @@ public abstract class UnitController<T> : MonoBehaviour where T : Unit {
         T u = (T)unitPatterns[name].Clone(t);
 
         u.Place();
-        u.ObjectHandler.transform.SetParent(UnitHolder);
+        if (u != null)
+        {
+            u.ObjectHandler.transform.SetParent(UnitHolder);
 
-        units.Add(u);
+            units.Add(u);
 
-        return u;
+            return u;
+        }
+
+        return null;
     }
 
     // Update is called once per frame
@@ -91,6 +99,7 @@ public abstract class UnitController<T> : MonoBehaviour where T : Unit {
 
     protected virtual void OnPatternsLoaded()
     {
+        Debug.Log("Выполняю OnPatternsLoaded");
         if (PatternsLoaded != null)
         {
             PatternsLoaded(this, EventArgs.Empty);

@@ -1,19 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RightMenu : MonoBehaviour {
-
+    [SerializeField]
+    WorldObjectController woController;
     [SerializeField]
     GameObject buildButton;
     [SerializeField]
     Transform worldObjectsHandler;
 
-    // Use this for initialization
-    void Start()
+    private void Awake()
     {
-        WorldObjectController woController = FindObjectOfType<WorldObjectController>();
+        woController.PatternsLoaded += Init;
+    }
+
+    // Use this for initialization
+    void Init(object source, EventArgs args)
+    {
+        woController = FindObjectOfType<WorldObjectController>();
 
         foreach (WorldObject wo in woController.GetAllPatterns())
         {

@@ -23,17 +23,22 @@ public class ConstructionController : UnitController<Construction> {
         }
     }
 
+    private void Awake()
+    {
+        constructionFunctions = new ConstructionFunctions();
+    }
+
     // Use this for initialization
     protected override void Start()
     {
         base.Start();
-        constructionFunctions = new ConstructionFunctions();
     }
 
     public override Construction Place(string name, Tile t)
     {
         Construction c = base.Place(name, t);
-        OnConstructionPlaced(c);
+        if (c != null)
+            OnConstructionPlaced(c);
         return c;
     }
     

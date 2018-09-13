@@ -17,8 +17,8 @@ public abstract class Unit {
     public int Width { get; protected set; }
     public int Heigth { get; protected set; }
 
-    public Dictionary<string, float> Parameters { get; protected set; }
-    public Action<Unit, float> UpdateActions { get; protected set; }
+    public Dictionary<string, float> Parameter { get; protected set; }
+    public Action<Unit, float> UpdateAction { get; protected set; }
 
     //JSON public vars
     public string JName;
@@ -30,7 +30,7 @@ public abstract class Unit {
 
     public Unit()
     {
-
+        
     }
 
     public Unit(string name, Sprite objectSprite, int tileSizeWidth, int tileSizeHeigth)
@@ -39,7 +39,7 @@ public abstract class Unit {
         this.ObjectSprite = objectSprite;
         this.Width = tileSizeWidth;
         this.Heigth = tileSizeHeigth;
-        this.Parameters = new Dictionary<string, float>();
+        this.Parameter = new Dictionary<string, float>();
     }
 
     public Unit(Vector2 position)
@@ -53,9 +53,9 @@ public abstract class Unit {
         Heigth = other.Heigth;
         ObjectName = other.ObjectName;
         ObjectSprite = other.ObjectSprite;
-        Parameters = new Dictionary<string, float>(other.Parameters);
+        Parameter = new Dictionary<string, float>(other.Parameter);
         tilesRef = new List<Tile>();
-        UpdateActions = other.UpdateActions;
+        UpdateAction = other.UpdateAction;
     }
 
     public abstract Unit Clone(Tile t);
@@ -66,9 +66,14 @@ public abstract class Unit {
         this.ObjectSprite = SpriteManager.current.GetSprite(LayerName, this.JSpriteName);
         this.Width = this.JWidth;
         this.Heigth = this.JHeigth;
-        foreach (JFloat param in this.JParameters)
+        this.Parameter = new Dictionary<string, float>();
+        
+        if (this.JParameters != null)
         {
-            SetParam(param.name, param.value);
+            foreach (JFloat param in this.JParameters)
+            {
+                SetParam(param.name, param.value);
+            }
         }
         return this;
     }
@@ -108,30 +113,42 @@ public abstract class Unit {
 
     public virtual void Update(float deltaTime)
     {
-        if (UpdateActions != null)
+        if (UpdateAction != null)
         {
-            UpdateActions(this, deltaTime);
+            UpdateAction(this, deltaTime);
         }
     }
 
     public float GetParam(string name)
     {
-        return Parameters[name];
+        if (Parameter.ContainsKey(name))
+        {
+            return Parameter[name];
+        } else
+        {
+            return 0f;
+        }
     }
 
     public void SetParam(string name, float value)
     {
-        Parameters[name] = value;
+        if (Parameter.ContainsKey(name) == false)
+        {
+            Parameter.Add(name, value);
+        } else
+        {
+            Parameter[name] = value;
+        }
     }
 
     public void RegisterOnUpdate(Action<Unit, float> callback)
     {
-        UpdateActions += callback;
+        UpdateAction += callback;
     }
 
     public void UnregisterOnUpdate(Action<Unit, float> callback)
     {
-        UpdateActions -= callback;
+        UpdateAction -= callback;
     }
 
     protected void SetTilesReference(Unit unit, Tile t)

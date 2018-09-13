@@ -10,7 +10,7 @@ public class BottomMenu : MonoBehaviour {
     [SerializeField]
     GameObject buildConstructionButton;
 
-    void Start()
+    void Awake()
     {
         constructionController.PatternsLoaded += Init;
     }

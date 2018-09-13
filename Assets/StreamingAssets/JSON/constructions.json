@@ -8,22 +8,22 @@
             "JHeigth": 3,
             "JResource": [ 
                 {
-                    "Name": "WOOD",
-                    "Value": 5 
+                    "name": "WOOD",
+                    "value": 5 
                 }
             ],
             "JParameters" : [
                 {
-                    "Name": "timeToWait",
-                    "Value": 5
+                    "name": "timeToWait",
+                    "value": 5
                 },
                 {
-                    "Name": "counter",
-                    "Value": 5
+                    "name": "counter",
+                    "value": 5
                 },
                 {
-                    "Name": "productionValue",
-                    "Value": 1
+                    "name": "productionValue",
+                    "value": 1
                 }
             ],
             "JOnUpdateAction" : [

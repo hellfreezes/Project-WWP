@@ -5,22 +5,19 @@
             "JName": "Grass01",
             "JSpriteName": "Grass01",
             "JWidth": 1,
-            "JHeigth": 1,
-            "JParameters" : []
+            "JHeigth": 1
         },
         {
             "JName": "Tree01",
             "JSpriteName": "Tree01",
             "JWidth": 2,
-            "JHeigth": 3,
-            "JParameters" : []
+            "JHeigth": 3
         },
         {
             "JName": "Rock01",
             "JSpriteName": "Rock01",
             "JWidth": 1,
-            "JHeigth": 1,
-            "JParameters" : []
+            "JHeigth": 1
         }
     ]
 }

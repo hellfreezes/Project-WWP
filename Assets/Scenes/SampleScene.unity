@@ -1565,6 +1565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62156ab29e36a0f478272473adc40ddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  woController: {fileID: 1154500059}
   buildButton: {fileID: 1521023189520342, guid: 3aa86e8fabb00d74b9c26afbae1ed2fa,
     type: 2}
   worldObjectsHandler: {fileID: 675928683}
@@ -1751,7 +1752,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000038833172, y: 0}
+  m_AnchoredPosition: {x: 0.000015615913, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &675928684
@@ -5548,6 +5549,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4483a2d17d7352946adf73910e9d2550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  constructionController: {fileID: 1653029749}
   buildConstructionButton: {fileID: 1521023189520342, guid: 3aa86e8fabb00d74b9c26afbae1ed2fa,
     type: 2}
 --- !u!1 &1959482671
