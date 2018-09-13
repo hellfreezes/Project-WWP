@@ -16,7 +16,8 @@ public class WorldObjectController : MonoBehaviour {
     private void Start()
     {
         worldObjects = new List<WorldObject>();
-        LoadWorldObjectsPatterns();
+        if (worldobjectsPatterns == null)
+            LoadWorldObjectsPatterns();
     }
 	
 	// Update is called once per frame
@@ -54,6 +55,9 @@ public class WorldObjectController : MonoBehaviour {
 
     public WorldObject[] GetAllPatterns()
     {
+        if (worldobjectsPatterns == null)
+            LoadWorldObjectsPatterns();
+
         return worldobjectsPatterns.Values.ToArray();
     }
 
