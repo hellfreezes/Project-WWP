@@ -68,7 +68,7 @@ public class MouseController : MonoBehaviour
         previewObjectSprite.sortingLayerName = "Preview";
         previewObjectSprite.color = COLOR_GREEN;
         previewObject.name = "MousePreviewObject";
-        previewObject.transform.SetParent(constructionController.GetConstructionParent());
+        previewObject.transform.SetParent(constructionController.UnitHolder);
         previewObject.SetActive(false);
     }
 
@@ -130,8 +130,9 @@ public class MouseController : MonoBehaviour
             Tile t = GetTileAtMouse();
             if (t != null)
             {
-                Vector2 tileSize = constructionController.GetPattern(buildName).TileSize;
-                previewObject.transform.localPosition = new Vector3(t.X + ((tileSize.x - 1) / 2), t.Y + ((tileSize.y - 1) / 2), 0);
+                int x = constructionController.GetPattern(buildName).Width;
+                int y = constructionController.GetPattern(buildName).Heigth;
+                previewObject.transform.localPosition = new Vector3(t.X + ((x - 1) / 2), t.Y + ((y - 1) / 2), 0);
                 if (constructionController.GetPattern(buildName).IsBuildTileVaild(t))
                 {
                     previewObjectSprite.color = COLOR_GREEN;
@@ -147,8 +148,9 @@ public class MouseController : MonoBehaviour
             Tile t = GetTileAtMouse();
             if (t != null)
             {
-                Vector2 tileSize = woController.GetPattern(buildName).TileSize;
-                previewObject.transform.localPosition = new Vector3(t.X + ((tileSize.x - 1) / 2), t.Y + ((tileSize.y - 1) / 2), 0);
+                int x = woController.GetPattern(buildName).Width;
+                int y = woController.GetPattern(buildName).Heigth;
+                previewObject.transform.localPosition = new Vector3(t.X + ((x - 1) / 2), t.Y + ((y - 1) / 2), 0);
             }
         }
     }
@@ -158,7 +160,7 @@ public class MouseController : MonoBehaviour
         Tile tile = GetTileAtMouse();
         if (tile != null)
         {
-            constructionController.PlaceBuilding(buildName , tile);
+            constructionController.Place(buildName , tile);
         }
     }
 
@@ -167,7 +169,7 @@ public class MouseController : MonoBehaviour
         Tile tile = GetTileAtMouse();
         if (tile != null)
         {
-            woController.PlaceObject(buildName, tile);
+            woController.Place(buildName, tile);
         }
     }
 

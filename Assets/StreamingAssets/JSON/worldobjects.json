@@ -1,23 +1,26 @@
 {
-    "Version": "1.00",
-    "worldObjects": [
+    "version": "1.00",
+    "list": [
         {
-            "objectName": "Grass01",
-            "spriteName": "Grass01",
-            "width": 1,
-            "heigth": 1
+            "JName": "Grass01",
+            "JSpriteName": "Grass01",
+            "JWidth": 1,
+            "JHeigth": 1,
+            "JParameters" : []
         },
         {
-            "objectName": "Tree01",
-            "spriteName": "Tree01",
-            "width": 2,
-            "heigth": 3
+            "JName": "Tree01",
+            "JSpriteName": "Tree01",
+            "JWidth": 2,
+            "JHeigth": 3,
+            "JParameters" : []
         },
         {
-            "objectName": "Rock01",
-            "spriteName": "Rock01",
-            "width": 1,
-            "heigth": 1
+            "JName": "Rock01",
+            "JSpriteName": "Rock01",
+            "JWidth": 1,
+            "JHeigth": 1,
+            "JParameters" : []
         }
     ]
 }

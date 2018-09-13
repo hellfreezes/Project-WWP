@@ -10,128 +10,33 @@ public class ConstructionArgs : EventArgs
     public Construction CurrentConstruction { get; set; }
 }
 
-public class ConstructionController : MonoBehaviour {
-    [SerializeField]
-    private Sprite[] buildingSprites;
-    [SerializeField]
-    private GameObject constructionParent;
-
-
-    private Dictionary<string, Construction> constructionPatterns;
-
-    private List<Construction> constructions;
-
+public class ConstructionController : UnitController<Construction> {
     private ConstructionFunctions constructionFunctions;
 
     public EventHandler<ConstructionArgs> ConstructionPlaced;
 
+    protected override string PatternsFile
+    {
+        get
+        {
+            return "constructions";
+        }
+    }
+
     // Use this for initialization
-    private void Awake()
+    protected override void Start()
     {
+        base.Start();
         constructionFunctions = new ConstructionFunctions();
-        constructionPatterns = new Dictionary<string, Construction>();
-        constructions = new List<Construction>();
-        CreateConstructionsList();
     }
 
-    void Start()
+    public override Construction Place(string name, Tile t)
     {
-        
-    }
-
-    private void CreateConstructionsList()
-    {
-        string path = Application.streamingAssetsPath + "/JSON/constructions.json";
-        ConstructionListJSONHelper constructionsList = new ConstructionListJSONHelper();
-        using (StreamReader stream = new StreamReader(path))
-        {
-            string json = stream.ReadToEnd();
-            constructionsList = JsonUtility.FromJson<ConstructionListJSONHelper>(json);
-        }
-       
-        foreach(ConstructionJSONHelper cJSON in constructionsList.Constructions)
-        {
-            Construction b = LoadConstructionFromJSONHelper(cJSON);
-            constructionPatterns.Add(b.ObjectName, b);
-        }
-    }
-
-    private Construction LoadConstructionFromJSONHelper(ConstructionJSONHelper constructionJSON)
-    {
-        Resources res = new Resources();
-        foreach(IntegerJSONHelper r in constructionJSON.Resource)
-        {
-            res.SetResource((ResourceName)Enum.Parse(typeof(ResourceName), r.Name), r.Value);
-        }
-        Construction c = new Construction(constructionJSON.Name, 
-            SpriteManager.current.GetSprite("Construction", constructionJSON.SpriteName), 
-            new Vector2(constructionJSON.TileSizeWidth, constructionJSON.TileSizeHeigth), 
-            res);
-        foreach(FloatJSONHelper param in constructionJSON.Param)
-        {
-            c.SetParam(param.Name, param.Value);
-        }
-        foreach(string action in constructionJSON.OnUpdateAction)
-        {
-            c.RegisterOnUpdate(constructionFunctions.GetAction(action));
-        }
-
+        Construction c = base.Place(name, t);
+        OnConstructionPlaced(c);
         return c;
     }
-
-    private void CreateConstructionButtons()
-    {
-
-    }
-
-    public void PlaceBuilding(string name, Tile t)
-    {
-        if (constructionPatterns[name].IsBuildTileVaild(t))
-        {
-            Construction c = (Construction)constructionPatterns[name].Clone(t);
-
-            c.Place();
-            c.ObjectHandler.transform.SetParent(constructionParent.transform);
-
-            constructions.Add(c);
-
-            OnConstructionPlaced(c);
-        } else
-        {
-            //Debug.Log("Место занято");
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        foreach (Construction construction in constructions)
-        {
-            construction.Update(GameManager.Instance.GameSpeed);
-        }
-    }
-
-    public Construction GetPattern(string name)
-    {
-        if (!constructionPatterns.ContainsKey(name))
-        {
-            Debug.LogError("В базе данных прототипов отсутвует " + name + " здание");
-            return null;
-        }
-
-        return constructionPatterns[name];
-    }
-
-    public Construction[] GetAllPatterns()
-    {
-        return constructionPatterns.Values.ToArray();
-    }
-
-    public Transform GetConstructionParent()
-    {
-        return constructionParent.transform;
-    }
-
+    
     protected virtual void OnConstructionPlaced(Construction c)
     {
         if (ConstructionPlaced != null)

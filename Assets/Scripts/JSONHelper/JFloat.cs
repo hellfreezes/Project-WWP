@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class IntegerJSONHelper {
-    public string Name;
-    public int Value;
+public class JFloat {
+    public string name;
+    public float value;
 }

@@ -1,18 +1,18 @@
 {
-    "Version": "1.00",
-    "Constructions": [
+    "version": "1.00",
+    "list": [
         {
-            "Name": "Lumber Mill", 
-            "SpriteName": "Lumber Mill",
-            "TileSizeWidth": 3,
-            "TileSizeHeigth": 3,
-            "Resource": [ 
+            "JName": "Lumber Mill", 
+            "JSpriteName": "Lumber Mill",
+            "JWidth": 3,
+            "JHeigth": 3,
+            "JResource": [ 
                 {
                     "Name": "WOOD",
                     "Value": 5 
                 }
             ],
-            "Param" : [
+            "JParameters" : [
                 {
                     "Name": "timeToWait",
                     "Value": 5
@@ -26,7 +26,7 @@
                     "Value": 1
                 }
             ],
-            "OnUpdateAction" : [
+            "JOnUpdateAction" : [
                 "LumberMillUpdate"
             ]
         }

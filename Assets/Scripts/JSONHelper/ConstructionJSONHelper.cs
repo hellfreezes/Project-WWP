@@ -9,7 +9,7 @@ public class ConstructionJSONHelper {
     public string SpriteName;
     public int TileSizeWidth;
     public int TileSizeHeigth;
-    public IntegerJSONHelper[] Resource;
-    public FloatJSONHelper[] Param;
+    public JInteger[] Resource;
+    public JFloat[] Param;
     public string[] OnUpdateAction;
 }

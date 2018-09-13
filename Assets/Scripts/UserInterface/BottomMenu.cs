@@ -1,18 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class BottomMenu : MonoBehaviour {
-
+    [SerializeField]
+    ConstructionController constructionController;
     [SerializeField]
     GameObject buildConstructionButton;
 
-    // Use this for initialization
     void Start()
     {
-        ConstructionController constructionController = FindObjectOfType<ConstructionController>();
+        constructionController.PatternsLoaded += Init;
+    }
 
+    // Use this for initialization
+    void Init(object source, EventArgs args)
+    {
         foreach (Construction c in constructionController.GetAllPatterns())
         {
             GameObject go = Instantiate(buildConstructionButton);

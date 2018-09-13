@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class WorldObject : Unit {
     protected override string LayerName
     {
@@ -16,7 +18,8 @@ public class WorldObject : Unit {
         
     }
 
-    public WorldObject(string name, Sprite sprite, Vector2 size) : base (name, sprite, size)
+    public WorldObject(string name, Sprite sprite, int tileSizeWidth, int tileSizeHeigth) 
+        : base (name, sprite, tileSizeWidth, tileSizeHeigth)
     {
         
     }
