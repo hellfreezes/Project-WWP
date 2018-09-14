@@ -29,15 +29,13 @@ public class Construction : Unit {
         Resources = other.Resources;
     }
 
-    public override Unit Clone(Tile t)
+    public override MapObject Clone()
     {
         Construction construction = new Construction(this);
-        construction.Position = new Vector2(t.X, t.Y);
-        SetTilesReference(construction, t);
         return construction;
     }
 
-    public override Unit DeserelizePattern()
+    public override MapObject DeserelizePattern()
     {
         base.DeserelizePattern();
         Resources = new Resources();

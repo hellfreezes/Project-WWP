@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class WorldObjectController : UnitController<WorldObject>
+public class WorldObjectController : MapObjectController<WorldObject>
 {
     protected override string PatternsFile
     {

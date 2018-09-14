@@ -13,11 +13,6 @@ public class WorldObject : Unit {
         }
     }
 
-    public WorldObject(Vector2 position) : base (position)
-    {
-        
-    }
-
     public WorldObject(string name, Sprite sprite, int tileSizeWidth, int tileSizeHeigth) 
         : base (name, sprite, tileSizeWidth, tileSizeHeigth)
     {
@@ -29,11 +24,9 @@ public class WorldObject : Unit {
 
     }
 
-    public override Unit Clone(Tile t)
+    public override MapObject Clone()
     {
         WorldObject worldObject = new WorldObject(this);
-        worldObject.Position = new Vector2(t.X, t.Y);
-        SetTilesReference(worldObject, t);
         return worldObject;
     }
 }

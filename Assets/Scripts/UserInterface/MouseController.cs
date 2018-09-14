@@ -68,7 +68,7 @@ public class MouseController : MonoBehaviour
         previewObjectSprite.sortingLayerName = "Preview";
         previewObjectSprite.color = COLOR_GREEN;
         previewObject.name = "MousePreviewObject";
-        previewObject.transform.SetParent(constructionController.UnitHolder);
+        previewObject.transform.SetParent(constructionController.Holder);
         previewObject.SetActive(false);
     }
 

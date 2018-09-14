@@ -5,14 +5,14 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public abstract class UnitController<T> : MonoBehaviour where T : Unit {
-    public Transform UnitHolder;
+public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject {
+    public Transform Holder;
 
     protected abstract string PatternsFile { get; }
 
-    private Dictionary<string, T> unitPatterns;
+    protected Dictionary<string, T> unitPatterns;
 
-    private List<T> units;
+    protected List<T> units;
 
     public EventHandler PatternsLoaded;
 
@@ -45,18 +45,18 @@ public abstract class UnitController<T> : MonoBehaviour where T : Unit {
 
     public virtual T Place(string name, Tile t)
     {
-        if (!unitPatterns[name].IsBuildTileVaild(t))
-        {
-            Debug.Log("Место занято");
-            return null;
-        }
+        //if (!unitPatterns[name].IsBuildTileVaild(t))
+        //{
+        //    Debug.Log("Место занято");
+        //    return null;
+        //}
 
-        T u = (T)unitPatterns[name].Clone(t);
+        T u = (T)unitPatterns[name].Clone();
 
-        u.Place();
+        u.Place(t.Position);
         if (u != null)
         {
-            u.ObjectHandler.transform.SetParent(UnitHolder);
+            u.ObjectHandler.transform.SetParent(Holder);
 
             units.Add(u);
 
@@ -69,7 +69,7 @@ public abstract class UnitController<T> : MonoBehaviour where T : Unit {
     // Update is called once per frame
     void Update()
     {
-        foreach (Unit u in units)
+        foreach (T u in units)
         {
             u.Update(GameManager.Instance.GameSpeed);
         }

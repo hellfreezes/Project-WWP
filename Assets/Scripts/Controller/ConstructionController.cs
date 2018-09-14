@@ -10,7 +10,7 @@ public class ConstructionArgs : EventArgs
     public Construction CurrentConstruction { get; set; }
 }
 
-public class ConstructionController : UnitController<Construction> {
+public class ConstructionController : MapObjectController<Construction> {
     private ConstructionFunctions constructionFunctions;
 
     public EventHandler<ConstructionArgs> ConstructionPlaced;
@@ -36,6 +36,12 @@ public class ConstructionController : UnitController<Construction> {
 
     public override Construction Place(string name, Tile t)
     {
+        if (!unitPatterns[name].IsBuildTileVaild(t))
+        {
+            Debug.Log("Место занято");
+            return null;
+        }
+
         Construction c = base.Place(name, t);
         if (c != null)
             OnConstructionPlaced(c);
