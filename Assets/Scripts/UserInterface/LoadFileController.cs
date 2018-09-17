@@ -42,6 +42,8 @@ public class LoadFileController : DialogBoxController {
         string filePath = GameManager.Instance.FileSaveBasePath();
         string[] existingSaves = Directory.GetFiles(filePath, "*.sav");
 
+        Debug.Log(filePath);
+
         foreach (string file in existingSaves)
         {
             GameObject go = Instantiate(fileListItemPrefab);
@@ -71,12 +73,28 @@ public class LoadFileController : DialogBoxController {
         string fileName = inputLoadField.text;
         string filePath = Path.Combine(GameManager.Instance.FileSaveBasePath(), fileName + ".sav");
 
-        if (File.Exists(filePath) == true)
+        if (File.Exists(filePath) == false)
         {
-            //Перезапись
+            //Файл не обнаружен
             return;
         }
 
-        // Записать
+        // Загрузить
+        LoadGame(filePath);
+    }
+
+    private void LoadGame(string path)
+    {
+        JGameData jgd;
+
+        using (StreamReader stream = new StreamReader(path))
+        {
+            string json = stream.ReadToEnd();
+            jgd = JsonUtility.FromJson<JGameData>(json);
+        }
+
+        GameManager.Instance.tileController.LoadFromList(jgd.tiles);
+        GameManager.Instance.worldObjectController.LoadFromList(jgd.worldObjects);
+        GameManager.Instance.constructionController.LoadFromList(jgd.constructions);
     }
 }

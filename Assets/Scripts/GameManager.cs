@@ -4,6 +4,11 @@ using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    public TileController tileController;
+    public WorldObjectController worldObjectController;
+    public ConstructionController constructionController;
+
+
     [SerializeField]
     private GameObject worldHandler;
     [SerializeField]

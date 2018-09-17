@@ -1,0 +1,25 @@
+{
+    "version": "1.00",
+    "list": [
+        {
+            "JName": "0",
+            "JSpriteName": "0"
+        },
+        {
+            "JName": "1",
+            "JSpriteName": "1"
+        },
+        {
+            "JName": "2",
+            "JSpriteName": "2"
+        },
+        {
+            "JName": "3",
+            "JSpriteName": "3"
+        },
+        {
+            "JName": "4",
+            "JSpriteName": "4"
+        }
+    ]
+}

@@ -5,8 +5,13 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
+//public abstract class UnitController<C> : MapObjectController<С> where C : MapObject
+//{
+
+//}
+
 public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject {
-    public Transform Holder;
+    public Transform Handler;
 
     protected abstract string PatternsFile { get; }
 
@@ -37,26 +42,20 @@ public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject
         }
         foreach (T unit in serelizedList.list)
         {
-            unitPatterns.Add(unit.JName, (T)unit.DeserelizePattern());
+            unitPatterns.Add(unit.JName, (T)unit.DeserliazePattern());
         }
 
         OnPatternsLoaded();
     }
 
-    public virtual T Place(string name, Tile t)
+    public virtual T Place(string name, Vector2 position)
     {
-        //if (!unitPatterns[name].IsBuildTileVaild(t))
-        //{
-        //    Debug.Log("Место занято");
-        //    return null;
-        //}
-
         T u = (T)unitPatterns[name].Clone();
 
-        u.Place(t.Position);
+        u.Place(position);
         if (u != null)
         {
-            u.ObjectHandler.transform.SetParent(Holder);
+            u.ObjectHandler.transform.SetParent(Handler);
 
             units.Add(u);
 
@@ -104,5 +103,37 @@ public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject
         {
             PatternsLoaded(this, EventArgs.Empty);
         }
+    }
+
+    public virtual T[] GetSerialized()
+    {
+        JArray<T> saveData = new JArray<T>();
+        foreach (MapObject unit in units)
+            unit.Serialize();
+        return units.ToArray();
+    }
+
+    public virtual void LoadFromList(T[] list)
+    {
+        Clear();
+
+        foreach(T unit in list)
+        {
+            T u = (T)unitPatterns[unit.JName].Clone();
+            u.Place(new Vector2(unit.JPositionX, unit.JPositionY));
+            u.ObjectHandler.transform.SetParent(Handler);
+            units.Add(u);
+        }
+    }
+
+    public virtual void Clear()
+    {
+        foreach (T unit in units)
+        {
+            Destroy(unit.ObjectHandler);
+        }
+
+        PatternsLoaded = null;
+        units.Clear();
     }
 }

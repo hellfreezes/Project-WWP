@@ -27,6 +27,7 @@ public class Construction : Unit {
     public Construction(Construction other) : base(other)
     {
         Resources = other.Resources;
+        JResource = other.JResource;
     }
 
     public override MapObject Clone()
@@ -35,9 +36,9 @@ public class Construction : Unit {
         return construction;
     }
 
-    public override MapObject DeserelizePattern()
+    public override MapObject DeserliazePattern()
     {
-        base.DeserelizePattern();
+        base.DeserliazePattern();
         Resources = new Resources();
         if (this.JResource != null)
         {

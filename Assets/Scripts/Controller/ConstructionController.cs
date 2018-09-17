@@ -34,15 +34,16 @@ public class ConstructionController : MapObjectController<Construction> {
         base.Start();
     }
 
-    public override Construction Place(string name, Tile t)
+    public override Construction Place(string name, Vector2 position)
     {
+        Tile t = World.Instance.GetTileAt((int)position.x, (int)position.y);
         if (!unitPatterns[name].IsBuildTileVaild(t))
         {
             Debug.Log("Место занято");
             return null;
         }
 
-        Construction c = base.Place(name, t);
+        Construction c = base.Place(name, position);
         if (c != null)
             OnConstructionPlaced(c);
         return c;

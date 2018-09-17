@@ -28,27 +28,24 @@ public class World {
 
         gameManager = GameManager.Instance;
 
-        CreateWorld();
+        GameManager.Instance.tileController.PatternsLoaded += CreateWorld;
     }
 
-    private void CreateWorld()
+    private void CreateWorld(object source, EventArgs args)
     {
         for (int x = 0; x < Width; x++)
         {
             for (int y = 0; y < Heigth; y++)
             {
-                Tile tile = new Tile(x, y);
-                tiles.Add(new Vector2(x, y), tile);
-                GameObject go = new GameObject();
-                SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
                 int i = UnityEngine.Random.Range(0, 3);
-                sr.sprite = gameManager.GetSpriteTile(i);
-                sr.sortingLayerName = "Tile";
-                go.name = "Tile (" + x + ", " + y + ")";
-                go.transform.SetParent(gameManager.WorldHandler.transform);
-                go.transform.localPosition = new Vector3(x, y, 0);
+                Vector2 position = new Vector2(x, y);
+                Tile tile = GameManager.Instance.tileController.Place(i.ToString(), position);
+                tiles.Add(position, tile);
             }
         }
+
+        // Отписываемся.
+        GameManager.Instance.tileController.PatternsLoaded -= CreateWorld;
     }
 
     public Tile GetTileAt(int x, int y)

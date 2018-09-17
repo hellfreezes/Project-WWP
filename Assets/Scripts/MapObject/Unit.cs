@@ -30,11 +30,14 @@ public abstract class Unit : MapObject {
         Width = other.Width;
         Heigth = other.Heigth;
         tilesRef = new List<Tile>();
+
+        JWidth = other.JWidth;
+        JHeigth = other.JHeigth;
     }
 
-    public override MapObject DeserelizePattern()
+    public override MapObject DeserliazePattern()
     {
-        base.DeserelizePattern();
+        base.DeserliazePattern();
         this.Width = this.JWidth;
         this.Heigth = this.JHeigth;
 

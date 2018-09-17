@@ -78,5 +78,19 @@ public class SaveFileController : DialogBoxController {
         }
 
         // Записать
+        SaveFile(filePath);
+        CloseDialog();
+    }
+
+    private void SaveFile(string filePath)
+    {
+        JGameData jgd = new JGameData();
+        jgd.version = "1";
+        jgd.constructions   = GameManager.Instance.constructionController.GetSerialized();
+        jgd.worldObjects    = GameManager.Instance.worldObjectController.GetSerialized();
+        jgd.tiles           = GameManager.Instance.tileController.GetSerialized();
+        string data = JsonUtility.ToJson(jgd);
+
+        File.WriteAllText(filePath, data);
     }
 }

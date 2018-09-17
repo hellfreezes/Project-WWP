@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public abstract class MapObject {
 
     public Vector2 Position { get; set; }
@@ -47,11 +48,15 @@ public abstract class MapObject {
         ObjectSprite = other.ObjectSprite;
         Parameter = new Dictionary<string, float>(other.Parameter);
         UpdateAction = other.UpdateAction;
+
+        JName = other.JName;
+        JSpriteName = other.JSpriteName;
+        JOnUpdateAction = other.JOnUpdateAction;
     }
 
     public abstract MapObject Clone();
 
-    public virtual MapObject DeserelizePattern()
+    public virtual MapObject DeserliazePattern()
     {
         this.ObjectName = this.JName;
         this.ObjectSprite = SpriteManager.current.GetSprite(LayerName, this.JSpriteName);
@@ -74,7 +79,7 @@ public abstract class MapObject {
         SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
         sr.sprite = this.ObjectSprite;
         sr.sortingLayerName = LayerName;
-        this.SetGameObject(go);
+        SetGameObject(go);
     }
 
     protected virtual string GameObjectName(string name)
@@ -86,6 +91,12 @@ public abstract class MapObject {
     {
         ObjectHandler = go;
         ObjectHandler.transform.localPosition = new Vector3(Position.x, Position.y, 0);
+    }
+
+    public void SetSprite(Sprite sprite)
+    {
+        ObjectSprite = sprite;
+        ObjectHandler.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
     public virtual void Update(float deltaTime)
@@ -128,5 +139,21 @@ public abstract class MapObject {
     public void UnregisterOnUpdate(Action<MapObject, float> callback)
     {
         UpdateAction -= callback;
+    }
+
+    public virtual void Serialize()
+    {
+        JPositionX = (int)Position.x;
+        JPositionY = (int)Position.y;
+
+        List<JFloat> l = new List<JFloat>();
+        foreach (string key in Parameter.Keys)
+        {
+            JFloat jf = new JFloat();
+            jf.name = key;
+            jf.value = Parameter[key];
+            l.Add(jf);
+        }
+        JParameters = l.ToArray();
     }
 }

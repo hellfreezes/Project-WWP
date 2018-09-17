@@ -9,6 +9,12 @@ public class PlayerController : MonoBehaviour {
     GameObject saveDialogBox;
     [SerializeField]
     GameObject loadDialogBox;
+    [SerializeField]
+    TileController tileController;
+    [SerializeField]
+    WorldObjectController worldObjectController;
+    [SerializeField]
+    ConstructionController constructionController;
 
 	// Use this for initialization
 	void Start () {
@@ -25,6 +31,28 @@ public class PlayerController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             gameMenuPanel.SetActive(!gameMenuPanel.activeSelf);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F3))
+        {
+            JGameData jgd = new JGameData();
+            jgd.version = "1";
+            jgd.constructions = constructionController.GetSerialized();
+            jgd.worldObjects = worldObjectController.GetSerialized();
+            jgd.tiles = tileController.GetSerialized();
+            string data = JsonUtility.ToJson(jgd);
+            Debug.Log(data);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F4))
+        {
+            JGameData jgd = new JGameData();
+            jgd.version = "1";
+            jgd.constructions = constructionController.GetSerialized();
+            jgd.worldObjects = worldObjectController.GetSerialized();
+            jgd.tiles = tileController.GetSerialized();
+            string data = JsonUtility.ToJson(jgd);
+            Debug.Log(data);
         }
     }
 
