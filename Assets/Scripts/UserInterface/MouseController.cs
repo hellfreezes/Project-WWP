@@ -95,6 +95,7 @@ public class MouseController : MonoBehaviour
                     BuildMode();
                     break;
                 case MouseMode.SELECT:
+                    SelectMode();
                     break;
                 case MouseMode.EDITOR_OBJECTS:
                     ObjectsMode();
@@ -192,6 +193,19 @@ public class MouseController : MonoBehaviour
         }
     }
 
+    private void SelectMode()
+    {
+        Tile tile = GetTileAtMouse();
+        if (tile != null)
+        {
+            Unit unit = tile.GetUnit();
+            if (unit != null)
+            {
+                unit.MouseClick();
+            }
+        }
+    }
+
     public void SetBuildingMode(string name)
     {
         if (ResourcesController.Instance.MainResources.IsEnough(GameManager.Instance.constructionController.GetPattern(name).Resources))
@@ -231,7 +245,7 @@ public class MouseController : MonoBehaviour
         SetSelecetMode();
     }
 
-    private void SetSelecetMode()
+    public void SetSelecetMode()
     {
         previewObject.SetActive(false);
         mouseMode = MouseMode.SELECT;

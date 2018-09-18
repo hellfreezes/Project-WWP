@@ -4,9 +4,13 @@ using System.IO;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
+    public string gameVersion = "1a";
+
     public TileController tileController;
     public WorldObjectController worldObjectController;
     public ConstructionController constructionController;
+
+    public CommandBoxController commandBoxController;
 
 
     [SerializeField]
@@ -37,7 +41,7 @@ public class GameManager : MonoBehaviour {
     public float GameSpeed { get; protected set; }
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         if (instance != null)
         {
             Debug.Log("На сцене не может быть больше одного GameManager");

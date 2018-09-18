@@ -12,7 +12,8 @@ public class ResArgs : EventArgs
 public enum ResourceName
 {
     WOOD,
-    IRON
+    IRON,
+    HUMAN
 }
 
 /// <summary>
@@ -80,6 +81,9 @@ public class Resources {
 
     public void Substract(Resources res)
     {
+        if (res == null)
+            return; //FIXME: костыль!!!!
+
         List<ResourceName> names = new List<ResourceName>();
 
         foreach (ResourceName name in res.Keys())
@@ -128,6 +132,9 @@ public class Resources {
 
     public bool IsEnough(Resources res)
     {
+        if (res == null)
+            return true; //FIXME: костыль!!!!
+
         foreach (ResourceName name in res.Keys())
         {
             if (!resource.ContainsKey(name))

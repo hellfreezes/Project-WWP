@@ -34,7 +34,7 @@ public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject
 
         string path = Application.streamingAssetsPath + "/JSON/" + PatternsFile + ".json";
         JArray<T> serelizedList = new JArray<T>();
-        Debug.Log(typeof(T).ToString());
+        //Debug.Log(typeof(T).ToString());
         using (StreamReader stream = new StreamReader(path))
         {
             string json = stream.ReadToEnd();
@@ -98,7 +98,7 @@ public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject
 
     protected virtual void OnPatternsLoaded()
     {
-        Debug.Log("Выполняю OnPatternsLoaded");
+        //Debug.Log("Выполняю OnPatternsLoaded");
         if (PatternsLoaded != null)
         {
             PatternsLoaded(this, EventArgs.Empty);
@@ -119,11 +119,17 @@ public abstract class MapObjectController<T> : MonoBehaviour where T : MapObject
 
         foreach(T unit in list)
         {
-            T u = (T)unitPatterns[unit.JName].Clone();
-            u.Place(new Vector2(unit.JPositionX, unit.JPositionY));
-            u.ObjectHandler.transform.SetParent(Handler);
-            units.Add(u);
+            PlaceLoadedUnit(unit);
         }
+    }
+
+    protected virtual T PlaceLoadedUnit(T unit)
+    {
+        T u = (T)unitPatterns[unit.JName].Clone();
+        u.Place(new Vector2(unit.JPositionX, unit.JPositionY));
+        u.ObjectHandler.transform.SetParent(Handler);
+        units.Add(u);
+        return u;
     }
 
     public virtual void Clear()

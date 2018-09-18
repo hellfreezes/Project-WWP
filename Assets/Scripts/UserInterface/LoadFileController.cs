@@ -42,8 +42,6 @@ public class LoadFileController : DialogBoxController {
         string filePath = GameManager.Instance.FileSaveBasePath();
         string[] existingSaves = Directory.GetFiles(filePath, "*.sav");
 
-        Debug.Log(filePath);
-
         foreach (string file in existingSaves)
         {
             GameObject go = Instantiate(fileListItemPrefab);
@@ -81,6 +79,8 @@ public class LoadFileController : DialogBoxController {
 
         // Загрузить
         LoadGame(filePath);
+
+        CloseDialog();
     }
 
     private void LoadGame(string path)
@@ -91,6 +91,13 @@ public class LoadFileController : DialogBoxController {
         {
             string json = stream.ReadToEnd();
             jgd = JsonUtility.FromJson<JGameData>(json);
+        }
+
+        //Контроль версии
+        if (jgd.version != GameManager.Instance.gameVersion)
+        {
+            Debug.LogError("Невозможно загрузить игру (" + GameManager.Instance.gameVersion + "). Файл сохранения (" + jgd.version + ") не совпадает с текущей версией игры.");
+            return;
         }
 
         GameManager.Instance.tileController.LoadFromList(jgd.tiles);

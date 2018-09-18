@@ -85,7 +85,7 @@ public class SaveFileController : DialogBoxController {
     private void SaveFile(string filePath)
     {
         JGameData jgd = new JGameData();
-        jgd.version = "1";
+        jgd.version = GameManager.Instance.gameVersion;
         jgd.constructions   = GameManager.Instance.constructionController.GetSerialized();
         jgd.worldObjects    = GameManager.Instance.worldObjectController.GetSerialized();
         jgd.tiles           = GameManager.Instance.tileController.GetSerialized();

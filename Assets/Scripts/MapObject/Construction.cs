@@ -7,7 +7,6 @@ using UnityEngine;
 public class Construction : Unit {
     
     public Resources Resources { get; protected set; }
-
     public JInteger[] JResource;
 
     protected override string LayerName

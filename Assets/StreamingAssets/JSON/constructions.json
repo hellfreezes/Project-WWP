@@ -1,5 +1,5 @@
 {
-    "version": "1.00",
+    "version": "1.01",
     "list": [
         {
             "JName": "Lumber Mill", 
@@ -24,6 +24,13 @@
                 {
                     "name": "productionValue",
                     "value": 1
+                },
+                {   "name": "needPeopleMax",
+                    "value": 10
+                }
+                ,
+                {   "name": "Diameter",
+                    "value": 10
                 }
             ],
             "JOnUpdateAction" : [

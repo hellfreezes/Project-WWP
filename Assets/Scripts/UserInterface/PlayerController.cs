@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +7,7 @@ public class PlayerController : MonoBehaviour {
     [SerializeField]
     GameObject gameMenuPanel;
     [SerializeField]
-    GameObject saveDialogBox;
-    [SerializeField]
-    GameObject loadDialogBox;
+    List<DialogBoxController> dialogBoxes;
     [SerializeField]
     TileController tileController;
     [SerializeField]
@@ -30,29 +29,9 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            MouseController.Instance.SetSelecetMode();
+            HideAll();
             gameMenuPanel.SetActive(!gameMenuPanel.activeSelf);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F3))
-        {
-            JGameData jgd = new JGameData();
-            jgd.version = "1";
-            jgd.constructions = constructionController.GetSerialized();
-            jgd.worldObjects = worldObjectController.GetSerialized();
-            jgd.tiles = tileController.GetSerialized();
-            string data = JsonUtility.ToJson(jgd);
-            Debug.Log(data);
-        }
-
-        if (Input.GetKeyDown(KeyCode.F4))
-        {
-            JGameData jgd = new JGameData();
-            jgd.version = "1";
-            jgd.constructions = constructionController.GetSerialized();
-            jgd.worldObjects = worldObjectController.GetSerialized();
-            jgd.tiles = tileController.GetSerialized();
-            string data = JsonUtility.ToJson(jgd);
-            Debug.Log(data);
         }
     }
 
@@ -61,9 +40,18 @@ public class PlayerController : MonoBehaviour {
         gameMenuPanel.SetActive(false);
     }
 
-    public void ShowSaveDialog()
+    public void ShowDialogBox(int index)
     {
         HideMenu();
-        saveDialogBox.SetActive(true);
+        HideAll();
+        dialogBoxes[index].ShowDialog();
+    }
+
+    private void HideAll()
+    {
+        foreach(DialogBoxController box in dialogBoxes)
+        {
+            box.gameObject.SetActive(false);
+        }
     }
 }

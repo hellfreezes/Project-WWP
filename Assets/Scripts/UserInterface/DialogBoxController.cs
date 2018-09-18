@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class DialogBoxController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
-		
-	}
+        Debug.Log("DialogBoxController загружен");
+        Debug.Log(GameManager.Instance);
+    }
 	
 	// Update is called once per frame
 	void Update () {

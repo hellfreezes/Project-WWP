@@ -59,6 +59,11 @@ public class Tile : MapObject
         unit = u;
     }
 
+    public Unit GetUnit()
+    {
+        return unit;
+    }
+
     public bool Free()
     {
         if (unit != null)

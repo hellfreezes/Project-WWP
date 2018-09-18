@@ -14,6 +14,8 @@ public abstract class Unit : MapObject {
     public int JWidth;
     public int JHeigth;
 
+    public EventHandler Clicked;
+
     public Unit()
     {
         
@@ -90,5 +92,18 @@ public abstract class Unit : MapObject {
                 this.tilesRef.Add(tileToPlace);
             }
         }
+    }
+
+    protected virtual void OnClicked()
+    {
+        if (Clicked != null)
+        {
+            Clicked(this, EventArgs.Empty);
+        }
+    }
+
+    public void MouseClick()
+    {
+        OnClicked();
     }
 }

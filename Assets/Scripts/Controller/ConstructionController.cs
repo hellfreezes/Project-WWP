@@ -45,10 +45,20 @@ public class ConstructionController : MapObjectController<Construction> {
 
         Construction c = base.Place(name, position);
         if (c != null)
+        {
             OnConstructionPlaced(c);
+        }
         return c;
     }
-    
+
+    protected override Construction PlaceLoadedUnit(Construction unit)
+    {
+        Construction c = base.PlaceLoadedUnit(unit);
+        Debug.Log("PlaceLoadedUnit: " + c.ObjectName);
+        OnConstructionPlaced(c);
+        return c;
+    }
+
     protected virtual void OnConstructionPlaced(Construction c)
     {
         if (ConstructionPlaced != null)
