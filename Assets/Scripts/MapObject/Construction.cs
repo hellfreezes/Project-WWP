@@ -7,7 +7,9 @@ using UnityEngine;
 public class Construction : Unit {
     
     public Resources Resources { get; protected set; }
+    public Action<MapObject, float> ControlAction { get; protected set; }
     public JInteger[] JResource;
+    public string[] JControlAction;
 
     protected override string LayerName
     {
@@ -27,6 +29,8 @@ public class Construction : Unit {
     {
         Resources = other.Resources;
         JResource = other.JResource;
+        ControlAction = other.ControlAction;
+        JControlAction = other.JControlAction;
     }
 
     public override MapObject Clone()
@@ -52,6 +56,14 @@ public class Construction : Unit {
             {
                 //TODO: надо бы как-то покрасивше это записать:
                 RegisterOnUpdate(ConstructionFunctions.Instance.GetAction(action));
+            }
+        }
+        if (this.JControlAction != null)
+        {
+            foreach (string action in this.JControlAction)
+            {
+                //TODO: надо бы как-то покрасивше это записать:
+                ControlAction += ConstructionFunctions.Instance.GetAction(action);
             }
         }
 

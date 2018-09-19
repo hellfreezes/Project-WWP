@@ -25,16 +25,21 @@
                     "name": "productionValue",
                     "value": 1
                 },
-                {   "name": "needPeopleMax",
+                {   "name": "peopleMax",
                     "value": 10
-                }
-                ,
-                {   "name": "Diameter",
+                },
+                {   "name": "people",
+                    "value": 0
+                },
+                {   "name": "diameter",
                     "value": 10
                 }
             ],
             "JOnUpdateAction" : [
                 "LumberMillUpdate"
+            ],
+            "JControlAction" : [
+                "LumberMillControls"
             ]
         }
     ]

@@ -31,6 +31,7 @@ public class ConstructionFunctions {
     {
         actions = new Dictionary<string, Action<MapObject, float>>();
         actions.Add("LumberMillUpdate", LumberMillUpdate);
+        actions.Add("LumberMillControls", LumberMillControls);
     }
 
     public Action<MapObject, float> GetAction(string name)
@@ -53,5 +54,14 @@ public class ConstructionFunctions {
 
             construction.SetParam("counter", construction.GetParam("timeToWait"));
         } 
+    }
+
+    public static void LumberMillControls(MapObject construction, float deltaTime)
+    {
+        Debug.Log("Заполнение панели командами");
+        ValueWindow window =  CommandBoxController.Instance.AddValueWindow();
+        window.Init((Construction)construction, "Workers", "people", 
+            0, construction.GetParam("maxPeople"), ResourceName.HUMAN, 
+            ResourcesController.Instance.MainResources);
     }
 }
