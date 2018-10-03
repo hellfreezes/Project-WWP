@@ -46,7 +46,8 @@ public class ConstructionFunctions {
 
     public static void LumberMillUpdate(MapObject construction, float deltaTime)
     {
-        construction.SetParam("counter", construction.GetParam("counter") - deltaTime);
+                                                                            // зависимость от количества работающих людей
+        construction.SetParam("counter", construction.GetParam("counter") - (deltaTime));
         if (construction.GetParam("counter") <= 0)
         {
             //Тут добавить ресурсов
@@ -61,7 +62,7 @@ public class ConstructionFunctions {
         Debug.Log("Заполнение панели командами");
         ValueWindow window =  CommandBoxController.Instance.AddValueWindow();
         window.Init((Construction)construction, "Workers", "people", 
-            0, construction.GetParam("maxPeople"), ResourceName.HUMAN, 
+            0, construction.GetParam("peopleMax"), ResourceName.HUMAN, 
             ResourcesController.Instance.MainResources);
     }
 }

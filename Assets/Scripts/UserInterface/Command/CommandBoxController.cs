@@ -14,6 +14,8 @@ public class CommandBoxController : DialogBoxController {
     [SerializeField]
     GameObject valueWindowPrefab;
 
+    private Construction construction;
+
     private static CommandBoxController instance;
 
     List<GameObject> loadedWindows;
@@ -45,9 +47,12 @@ public class CommandBoxController : DialogBoxController {
 
     private void OnConstructionClicked(object source, EventArgs args)
     {
-        Construction c = (Construction)source;
-        FillPanel(c);
         ShowDialog();
+
+        ClearPanel();
+        construction = (Construction)source;
+        FillPanel(construction);
+        
     }
 
     private void FillPanel(Construction c)
@@ -73,6 +78,11 @@ public class CommandBoxController : DialogBoxController {
         {
             PanelClosed(this, EventArgs.Empty);
         }
+        ClearPanel();
+    }
+
+    private void ClearPanel()
+    {
         foreach (GameObject go in loadedWindows)
         {
             Destroy(go);
